@@ -1,0 +1,72 @@
+# basics:
+ifconfig # Zeigt alle Aktiven interfaces
+-a # Zeigt auch inaktive interfaces
+
+  
+tcpdump #  gibt die Header von Paketen in einer Netzschnittstelle aus
+-i <interface> # um auf ein spezielens interface zu lauschen
+<protocol> # auf ein spezieles protokol horchen
+
+tcpdump -i lo icmp 
+
+
+traceroute # Pfad einer request verfolgen
+-m # TTL angeben (standard ist 30)
+<seite> # die Seite die traceroute mappen soll
+
+
+nslookup <seite> # adresse einer domain einsehen
+
+
+arp # zeigt deine Momentane arp tabele an
+
+netstat # befehl um Netzwerkschnittstellen anzeigen zu lassen
+-rn # zeigt routing tabele (r = routing Tabelle; n = zeige nicht denn hostname sondern dessen Adresse)
+
+# 
+
+# ip adresse aendern:
+  sudo ip addr add <ip>/<mask> dev <interface> # um eine ip addresse an einem interface zu veraendern
+  sudo ip addr del <ip>/<mask> dev <interface> # loeschen der ip Adresse
+
+## ip persistent machen (bei neueren versionen von Ubuntu >17.10)
+  sudo nano /etc/netplan/01-netcfg.yaml
+ ############################# Config ################################
+      network:
+        version: 2
+        renderer: networkd
+        ethernets:
+          eth0:
+            dhcp4: no
+            addresses: [<ip>/<mask>]
+            gateway4: <gateway>
+            nameservers:
+              addresses: [8.8.8.8, 8.8.4.4]
+#####################################################################
+  sudo netplan apply # config datei neu laden
+  
+## bei aeltern versionen <17.10
+  sudo nano /etc/network/interfaces  
+############################# Config ################################
+auto <interface>
+
+iface <interface> inet static
+
+address <ip>
+
+netmask <mask>
+
+gateway <gateway>
+      
+#####################################################################
+sudo systemctl restart networking.service # config datei neu laden
+
+
+  # Netzwerk scan
+  
+nmap # Ein riesen grosses tool zum scanen von Netzwerken, hosts und ports
+nmap Netzaddr/mask # scant dieses netzwerk nach hosts und ports
+
+
+
+  
